@@ -1,0 +1,26 @@
+-- Create a new database (if it doesn't already exist)
+CREATE DATABASE IF NOT EXISTS job_portal_database;
+
+-- Switch to the newly created database
+USE job_portal_database;
+
+-- Create a table for job listings
+CREATE TABLE job_listings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employer_id INT NOT NULL, -- Reference to the employer who posted the job
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    salary DECIMAL(10, 2), -- You can adjust the precision and scale as needed
+    job_type ENUM('Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship', 'Temporary') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- Add any other fields you need for your job listings
+    -- For example, you can add fields for required qualifications, application deadline, etc.
+    
+    -- Define foreign key constraint for the employer_id column
+    FOREIGN KEY (employer_id) REFERENCES employers(id)
+);
+
+-- Create an index on the employer_id column for faster querying
+CREATE INDEX idx_employer_id ON job_listings (employer_id);
